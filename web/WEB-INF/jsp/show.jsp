@@ -15,9 +15,9 @@
               <%@include file="form.jsp"%>
               <br>
                <br>
-               <a href="${pageContext.request.contextPath}/index" class="btn btn-info">Volver</a>
+              
               <a href="${pageContext.request.contextPath}/edit?id=${cliente.id}" class="btn btn-warning">Editar</a>
-
+               <a href="${pageContext.request.contextPath}/index" class="btn btn-info">Volver</a>
 </div>
 
 <%@include file="layout/footer.jsp"%>

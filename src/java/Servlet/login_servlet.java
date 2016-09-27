@@ -7,11 +7,19 @@ package Servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import modelos.Usuario;
+import servicios.Validacion;
 
 /**
  *
@@ -59,6 +67,11 @@ public class login_servlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //processRequest(request, response);
+       //HttpSession session = request.getSession(true);	
+       //HttpSession session= (HttpSession) request.getSession();
+//        Usuario uId = (Usuario) session.getAttribute("usuario_registrado");
+
+        
       request.getRequestDispatcher("WEB-INF/jsp/login.jsp").forward(request, response);
     }
 
@@ -73,7 +86,35 @@ public class login_servlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            String usuario=request.getParameter("usuario");
+            String pass=request.getParameter("pass");
+            
+            HashMap<String, Object> errores=new HashMap();
+            
+            Usuario usser           =Validacion.loginValid(usuario,pass);
+            HttpSession session = request.getSession(true);	
+           
+            if(usser==null){
+                errores.put("login", "Datos incorrectos. Porfavor intente de nuevo.");
+                request.setAttribute("errores", errores);
+                session.setAttribute("noEcontrado","Usuario Invalido"); 
+                request.getRequestDispatcher("WEB-INF/jsp/login.jsp").forward(request, response);
+            }else{
+                    
+          session.setAttribute("usuario_registrado",usser); 
+          session.setAttribute("Exito","Usuario Valido."); 
+          request.getRequestDispatcher("WEB-INF/jsp/loginValid.jsp").forward(request, response);
+                
+            }
+           
+            
+            
+            
+        } catch (SQLException | ClassNotFoundException | ParseException ex) {
+            Logger.getLogger(login_servlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 
     /**

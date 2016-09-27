@@ -5,18 +5,44 @@
  */
 package servicios;
 
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import modelos.Usuario;
 
 /**
  *
  * @author usuario
  */
 public class Validacion {
+    
+    public static Usuario loginValid(String nombre, String pass) throws SQLException, ClassNotFoundException, ParseException{
+        Usuario usser=null;
+        SHA1 hash=new SHA1();
+        try {
+            usser=Usuario.buscar(nombre);
+            String contraseña=hash.getHash(pass);
+            if(usser!=null){
+                if(!usser.getPass().equals(contraseña)){
+                    return null;
+                }
+                
+            }
+            
+            
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(Validacion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+               return usser; 
+    }
     
     public static String soloLetras(String valor){
        
@@ -113,9 +139,27 @@ public class Validacion {
        }
        return mje;
     }
-    public static void main(String[] args) throws ParseException {
-       if(Validacion.validarFecha("12/02989").equals("")){
-          System.out.println( Validacion.esMayorEdad("12/02/2012"));
+    public static void main(String[] args) throws ParseException, SQLException, ClassNotFoundException, NoSuchAlgorithmException {
+        Usuario usser=null;
+        SHA1 hash=new SHA1();
+        
+            usser=Usuario.buscar("Dixon");
+            String contraseña=hash.getHash("123456");
+            if(usser!=null){
+                if(!usser.getPass().equals(contraseña)){
+                       System.out.println(usser.getPass());
+                       System.out.println(contraseña);
+                    System.out.println( "OK!");
+                }else{
+                    System.out.println( "pass mal!");
+                }
+                
+            }else{
+                System.out.println( "No OK!");
+            }
+            
+       if(Validacion.loginValid("Dixon", "123456")!=null){
+          System.out.println( "OK!");
        }
         
     }
