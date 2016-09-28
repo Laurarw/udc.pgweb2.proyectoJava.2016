@@ -67,7 +67,7 @@ public class Usuario {
             Rol rol=  buscarRol(usser.getNombre());
                 
             usser.setRol(rol);
-            System.out.println(usser.getRol());
+            
             
             }
             
@@ -79,7 +79,7 @@ public class Usuario {
         return usser;
     }
     
-    public static Rol buscarRol(String nombreUsuario) throws SQLException, ClassNotFoundException{
+    private static Rol buscarRol(String nombreUsuario) throws SQLException, ClassNotFoundException{
         
         Rol rol = null;
         String[] permisos = null ;
@@ -89,7 +89,7 @@ public class Usuario {
         Connection db = MySQL.conectar();
         java.sql.PreparedStatement consultas;
         
-        consultas = db.prepareStatement("SELECT r.id, r.nombre as rol,GROUP_CONCAT(p.nombre SEPARATOR ',') as permisos FROM `roles` r INNER JOIN usuarios_roles_aplicaciones ura ON r.id=ura.roles_id INNER JOIN aplicaciones_web a ON a.id=ura.aplicaciones_web_id INNER JOIN usuarios u ON ura.usuarios_id=u.id INNER JOIN gestion_roles_permisos grp ON ura.roles_id=grp.roles_id INNER JOIN permisos p ON grp.permisos_id=grp.permisos_id where a.titulo='Biorgia' and u.nombre= ? group by r.nombre;");
+        consultas = db.prepareStatement("SELECT r.id, r.nombre as rol,GROUP_CONCAT(p.nombre SEPARATOR ',') as permisos FROM `roles` r INNER JOIN usuarios_roles_aplicaciones ura ON r.id=ura.roles_id INNER JOIN aplicaciones_web a ON a.id=ura.aplicaciones_web_id INNER JOIN usuarios u ON ura.usuarios_id=u.id INNER JOIN gestion_roles_permisos grp ON ura.roles_id=grp.roles_id INNER JOIN permisos p ON p.id=grp.permisos_id where a.titulo='Biorgia' and u.nombre= ? group by r.nombre;");
             consultas.setString(1, nombreUsuario);
             
             ResultSet resultados = consultas.executeQuery();

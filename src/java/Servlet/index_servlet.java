@@ -37,6 +37,8 @@ public class index_servlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      * @throws java.sql.SQLException
+     * @throws java.lang.ClassNotFoundException
+     * @throws java.text.ParseException
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException, ClassNotFoundException, ParseException {
@@ -47,7 +49,8 @@ public class index_servlet extends HttpServlet {
         if(usser==null){
              request.getRequestDispatcher("WEB-INF/jsp/login.jsp").forward(request, response);
         }
-      
+        
+     
         ArrayList<Cliente> clientes= Cliente.listado();
         request.setAttribute("clientes", clientes);
          request.getRequestDispatcher("WEB-INF/jsp/index.jsp").forward(request, response);
@@ -68,11 +71,7 @@ public class index_servlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             processRequest(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(index_servlet.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(index_servlet.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ParseException ex) {
+        } catch (SQLException | ClassNotFoundException | ParseException ex) {
             Logger.getLogger(index_servlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         

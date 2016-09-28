@@ -6,8 +6,10 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
+   
     <head>
         <title>Clientes</title>
         <meta charset="UTF-8">
@@ -21,14 +23,7 @@
         
 <script type="text/javascript" src="${pageContext.request.contextPath}/lib/script.js"></script>
 
-      <!--  <script type="text/JavaScript" src="${pageContext.request.contextPath}/bower_components/jquery/dist/jquery.js"></script>
-       <script src="/bower_components/jquery/dist/jquery.js"></script>
-        <script src="WEB-INF/lib/bower_components/bootstrap/dist/js/bootstrap.js"></script>
-        <link rel=stylesheet href="WEB-INF/lib/bower_components/bootstrap/dist/css/bootstrap.css"/>
-        <link rel=stylesheet href="WEB-INF/lib/bower_components/jquery-ui/themes/smoothness/jquery-ui.css"/>
-        
-       -->
-        
+
         
    
 <script>

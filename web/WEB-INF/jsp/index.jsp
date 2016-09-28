@@ -43,7 +43,9 @@
                 <td><c:out value="${cliente.activo}"/></td>
                 <td><a href="${pageContext.request.contextPath}/edit?id=${cliente.id}" class="btn btn-xs btn-warning">Modificar</a>
                     <a href="${pageContext.request.contextPath}/show?id=${cliente.id}" class="btn btn-xs btn-info">Ver</a>
-                  <input name=<c:out value="${cliente.id}"/> type="button"  value="Eliminar" class="btn btn-xs btn-danger"/>
+                 <input name=<c:out value="${cliente.id}"/> type="button"  value="Eliminar" class="btn btn-xs btn-danger"/>
+
+
 
                   <input name="cliente" type="hidden" value="<c:out value="${cliente.id}"/>" id="cliente_id"/></td></td>
               </tr>

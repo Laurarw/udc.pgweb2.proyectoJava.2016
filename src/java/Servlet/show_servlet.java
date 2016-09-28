@@ -5,6 +5,7 @@
  */
 package Servlet;
 
+import static Servlet.crear_servlet.permisoAutorizado;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import modelos.Cliente;
 import modelos.Pais;
+import modelos.Usuario;
 
 /**
  *
@@ -73,16 +75,25 @@ public class show_servlet extends HttpServlet {
             throws ServletException, IOException {
         
         try {
-            String get=request.getParameter("id");
-            Integer id = Integer.parseInt(get);
-            request.setAttribute("id", id);
-            processRequest(request, response,id);
+             HttpSession session= (HttpSession) request.getSession();
+            Usuario usser = (Usuario) session.getAttribute("usuario_registrado");
+            if(usser==null){
+                 request.getRequestDispatcher("WEB-INF/jsp/login.jsp").forward(request, response);
+            }else{
+                boolean valido=permisoAutorizado(usser.getRol().getPermiso());
+                if(valido){
+                     String get=request.getParameter("id");
+                    Integer id = Integer.parseInt(get);
+                    request.setAttribute("id", id);
+                    processRequest(request, response,id);
+                }else{
+                    session.setAttribute("noEncontrado", "No tiene permiso para realizar esta acción");
+                     response.sendRedirect(request.getContextPath()+"/index");
+                }
+            }
             
-        } catch (SQLException ex) {
-            Logger.getLogger(show_servlet.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(show_servlet.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ParseException ex) {
+            
+        } catch (SQLException | ClassNotFoundException | ParseException ex) {
             Logger.getLogger(show_servlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

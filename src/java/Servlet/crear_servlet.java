@@ -12,6 +12,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -21,8 +22,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import modelos.Cliente;
 import modelos.Pais;
+import modelos.Usuario;
 import servicios.Validacion;
 
 /**
@@ -31,6 +34,13 @@ import servicios.Validacion;
  */
 @WebServlet(name = "crear_servlet", urlPatterns = {"/crear"})
 public class crear_servlet extends HttpServlet {
+    
+    private static final String permiso="crear_cliente";
+    
+    public static Boolean permisoAutorizado(String [] permisosUsuario){
+        boolean a= Arrays.asList(permisosUsuario).contains(permiso);
+        return a;
+    }
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,6 +56,11 @@ public class crear_servlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException, ClassNotFoundException {
         response.setContentType("text/html;charset=UTF-8");
+        ///////////
+        
+         
+        
+        ////////
         ArrayList<Pais> paises = Pais.listado();
         
         request.setAttribute("paises", paises);
@@ -66,10 +81,23 @@ public class crear_servlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            processRequest(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(crear_servlet.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
+         
+             HttpSession session= (HttpSession) request.getSession();
+            Usuario usser = (Usuario) session.getAttribute("usuario_registrado");
+            if(usser==null){
+                 request.getRequestDispatcher("WEB-INF/jsp/login.jsp").forward(request, response);
+            }else{
+                boolean valido=permisoAutorizado(usser.getRol().getPermiso());
+                if(valido){
+                     processRequest(request, response);
+                }else{
+                    session.setAttribute("noEncontrado", "No tiene permiso para realizar esta acción");
+                     //response.sendRedirect(request.getContextPath()+"/denegado.jsp");
+                     response.sendRedirect(request.getContextPath()+"/index");
+                }
+            }
+           
+        } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(crear_servlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

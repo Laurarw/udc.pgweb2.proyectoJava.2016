@@ -5,6 +5,7 @@
  */
 package Servlet;
 
+import static Servlet.crear_servlet.permisoAutorizado;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -24,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import modelos.Cliente;
 import modelos.Pais;
+import modelos.Usuario;
 import servicios.Validacion;
 
 /**
@@ -81,22 +83,33 @@ public class edit_servlet extends HttpServlet {
             throws ServletException, IOException {
         
         try {
+            ///////////////
+             HttpSession session= (HttpSession) request.getSession();
+            Usuario usser = (Usuario) session.getAttribute("usuario_registrado");
+            if(usser==null){
+                 request.getRequestDispatcher("WEB-INF/jsp/login.jsp").forward(request, response);
+            }else{
+                boolean valido=permisoAutorizado(usser.getRol().getPermiso());
+                if(valido){
+                     
+                    String get=request.getParameter("id");
+                    //Integer.valueOf(get); otra forma de castear un parametro
+                    //validacion. arrojar throw new Illegak-argumentExeption("El campo no debe estar vacio")
+                    //lo anterior dentro de un try. EN el catch (blaval e). e.getmessage(setearlo en una variable.
+                    Integer id = Integer.parseInt(get);
+                    request.setAttribute("id", id);
+                    processRequest(request, response,id);
+                }else{
+                    session.setAttribute("noEncontrado", "No tiene permiso para realizar esta acción");
+                     response.sendRedirect(request.getContextPath()+"/index");
+                }
+            }
+            /////////////
+            
+           
             
             
-            String get=request.getParameter("id");
-            //Integer.valueOf(get); otra forma de castear un parametro
-            //validacion. arrojar throw new Illegak-argumentExeption("El campo no debe estar vacio")
-            //lo anterior dentro de un try. EN el catch (blaval e). e.getmessage(setearlo en una variable.
-            Integer id = Integer.parseInt(get);
-            request.setAttribute("id", id);
-            processRequest(request, response,id);
-            
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(edit_servlet.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(edit_servlet.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ParseException ex) {
+        } catch (SQLException | ClassNotFoundException | ParseException ex) {
             Logger.getLogger(edit_servlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
