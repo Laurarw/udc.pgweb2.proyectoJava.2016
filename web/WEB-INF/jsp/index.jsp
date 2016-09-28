@@ -12,7 +12,7 @@
 
       
       
-<div class="container">
+
     <%@include file="layout/exito.jsp"%>
     <%@include file="layout/problema.jsp"%>
     <%@include file="layout/confirm_delete.jsp"%>
@@ -43,7 +43,7 @@
                 <td><c:out value="${cliente.activo}"/></td>
                 <td><a href="${pageContext.request.contextPath}/edit?id=${cliente.id}" class="btn btn-xs btn-warning">Modificar</a>
                     <a href="${pageContext.request.contextPath}/show?id=${cliente.id}" class="btn btn-xs btn-info">Ver</a>
-                 <input name=<c:out value="${cliente.id}"/> type="button"  value="Eliminar" class="btn btn-xs btn-danger"/>
+                 <input name=<c:out value="${cliente.id}"/> type="button"  value="Baja" class="btn btn-xs btn-danger"/>
 
 
 
@@ -57,7 +57,7 @@
         
       </tbody>
     </table>
-</div>
+
 <%@include file="layout/footer.jsp"%>
 
 

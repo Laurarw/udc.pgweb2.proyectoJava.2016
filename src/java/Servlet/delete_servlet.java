@@ -41,7 +41,7 @@ public class delete_servlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response,Integer id)
             throws ServletException, IOException, SQLException, ClassNotFoundException, ParseException {
          response.setContentType("text/html;charset=UTF-8");
-        Cliente.eliminar(Cliente.buscar(id));
+        Cliente.eliminar(Cliente.buscar(id),false);
             
         HttpSession session = request.getSession();
         session.setAttribute("Exito","Se eliminó el registro con exito");

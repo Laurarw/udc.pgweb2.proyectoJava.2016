@@ -4,12 +4,12 @@
     Author     : usuario
 --%>
 <%@include file="layout/header.jsp"%>
-<div class="container">
+
     <%@include file="layout/exito.jsp"%>
     <%@include file="layout/problema.jsp"%>
     <%@include file="layout/confirm_delete.jsp"%>
     <div style="text-align: center;">Espere unos segundos que será redirigido.</div>
-</div>
+
     
     <script>
         setTimeout(function() {

@@ -6,7 +6,7 @@
 
 <%@include file="layout/header.jsp"%>
 
- <div class="container"> 
+
              <h3>Crear Cliente</h3>
              
              <%@include file="layout/errores.jsp"%>
@@ -22,6 +22,6 @@
             
         </form> 
        
-         </div>
+   
 
 <%@include file="layout/footer.jsp"%>

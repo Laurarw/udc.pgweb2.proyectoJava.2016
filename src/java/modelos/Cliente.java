@@ -272,12 +272,15 @@ public class Cliente {
         return cliente;
     }
 
-    public static void eliminar(Cliente cliente) throws SQLException, ClassNotFoundException {
+    public static void eliminar(Cliente cliente, boolean estado) throws SQLException, ClassNotFoundException {
         Connection db = MySQL.conectar();
         java.sql.PreparedStatement consulta;
         try {
-            consulta = db.prepareStatement("DELETE FROM " + tabla + " WHERE id = ?");
-            consulta.setInt(1, cliente.getId());
+             consulta = db.prepareStatement("UPDATE `" + tabla + "` SET activo= ? WHERE id = ?;");
+                
+               
+            consulta.setBoolean(1, estado);
+            consulta.setInt(2, cliente.getId());
             consulta.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex);
@@ -290,38 +293,20 @@ public class Cliente {
     }
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException, ParseException {
-        //Cliente a=new Cliente();
-        Cliente b = new Cliente(18, "nahir", "argañaraz", "1989-03-04", true, "4");
+        Cliente a=new Cliente();
+        //Cliente b = new Cliente(18, "nahir", "argañaraz", "1989-03-04", true, "4");
         
-        
-       // DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        
-        String fecha="14/04/2016";
-         SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd/MM/yyyy");
-        
-
-        Date fecha1 = null;
-        fecha1 = formatoDelTexto.parse(fecha);
-        String FBD=formatoDelTexto.format(fecha1);
-        System.out.println(FBD);
-        
-  
-        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        String fecha2 = formatter.format(fecha1);
-          System.out.println(fecha2);
-        
-//        Date fecha_nac = null;
-//        fecha_nac=formatter.parse(fecha2);
+        a=buscar(3);
+       System.out.println(a);
+        eliminar(a, false);
+         System.out.println(a);
 //        
-//        String fecha_na = formatter.format(fecha_nac);
-//        
-//        
-        Cliente.guardar(new Cliente(null,"sonia","cardenas",fecha,true,"18"));
+       // Cliente.eliminar(new Cliente(null,"sonia","cardenas",fecha,true,"18"));
         //b.setFecha_nacimiento("04/03/1989");
         //b.setEdad(b.getFecha_nacimiento());
 //        Iterator<Cliente> it = Cliente.listado().iterator();
 //            while(it.hasNext())
-//                System.out.println(it.next());
+//                
 
         //System.out.println(b.getEdad());
     }

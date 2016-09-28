@@ -5,12 +5,13 @@
 --%>
 <%@include file="layout/header.jsp"%>
 
-  <div class="container"> 
+
       <%@include file="layout/problema.jsp"%>
         <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
             <div class="panel panel-info" >
                     <div class="panel-heading">
                         <div class="panel-title">Sign In</div>
+                        <%@include file="layout/errores.jsp"%>
                     </div>     
 
                     <div style="padding-top:30px" class="panel-body" >
@@ -64,6 +65,6 @@
                     </div>  
         </div>
         
-    </div>
+
 
 <%@include file="layout/footer.jsp"%>

@@ -6,7 +6,7 @@
 
 <%@include file="layout/header.jsp"%>
 
- <div class="container"> 
+
              <h3>Cliente: ${cliente.nombre},${cliente.apellido}</h3>
 
              <%@include file="layout/errores.jsp"%>
@@ -27,7 +27,7 @@
              
              
         
-</div>
+
 
 <%@include file="layout/footer.jsp"%>
 
